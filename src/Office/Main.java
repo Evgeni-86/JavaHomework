@@ -8,7 +8,7 @@ import java.util.Map;
 public class Main {
     public static void main(String[] args) {
 
-        File directly = new File("src/Office/Reports");
+        File directory = new File("src/Office/Reports");
 
         while (true) {
             Service.menu();
@@ -16,10 +16,10 @@ public class Main {
 
             switch (input) {
                 case "1":
-                    MonthlyReport.readMonthlyReports(directly);
+                    MonthlyReport.readMonthlyReports(directory);
                     break;
                 case "2":
-                    YearlyReport.readMonthlyReports(directly);
+                    YearlyReport.readYearlyReports(directory);
                     break;
                 case "3":
                     if (MonthlyReport.isRead() && YearlyReport.isRead()) {
@@ -51,13 +51,13 @@ public class Main {
     //-----------------------------------------------------------------------------------------------
     static public void checkReports(HashMap<String, ArrayList<YearlyReportItem>> data) {
         StringBuilder check = new StringBuilder();
-
+        //ЦИКЛ ПО КЛЮЧУ ( ГОД )
         for (Map.Entry<String, ArrayList<YearlyReportItem>> entry : data.entrySet()) {
             String nameYear = entry.getKey();
-            String numbersYear = nameYear.split("\\.")[1];
+            String numbersYear = nameYear.split("\\.")[1]; //берем строку только год
 
             ArrayList<YearlyReportItem> months = entry.getValue();
-
+            //ЦИКЛ ПО МЕСЯЦАМ
             for (YearlyReportItem currentMonth : months) {
                 //имя месячного отсчета
                 String monthlyReportName = "m." + numbersYear + String.format("%02d", currentMonth.getMonth()) + ".csv";
@@ -90,12 +90,12 @@ public class Main {
     static public void printMonthlyReports(HashMap<String, ArrayList<MonthlyReportItem>> data) {
 
         for (Map.Entry<String, ArrayList<MonthlyReportItem>> entry : data.entrySet()) {
-            String nameMonth = entry.getKey().split("\\.")[1];
+            String nameMonth = entry.getKey().split("\\.")[1]; //берем строку только месяц
             System.out.println("Название месяца : " + nameMonth);
 
             ArrayList<MonthlyReportItem> items = entry.getValue();
-            String bigProfitItem = "";
-            String bigSpendingItem = "";
+            String bigProfitName = "";
+            String bigSpendName = "";
             int bigProfit = 0;
             int bigSpend = 0;
 
@@ -106,20 +106,20 @@ public class Main {
 
                 if (!is_expense) { //если доход
                     if (quantity * sum_of_one > bigProfit) {     //если профит больше базового
-                        bigProfitItem = currentItem.getItem_name();
+                        bigProfitName = currentItem.getItem_name();
                         bigProfit = quantity * sum_of_one;
                     }
                 } else { //если расход
                     if (quantity * sum_of_one > bigSpend) {
-                        bigSpendingItem = currentItem.getItem_name();
+                        bigSpendName = currentItem.getItem_name();
                         bigSpend = quantity * sum_of_one;
                     }
                 }
 
             }
 
-            System.out.println("Самый прибыльный товар : " + bigProfitItem + ", сумма : " + bigProfit);
-            System.out.println("Самая большая трата : " + bigSpendingItem + ", сумма : " + bigSpend);
+            System.out.println("Самый прибыльный товар : " + bigProfitName + ", сумма : " + bigProfit);
+            System.out.println("Самая большая трата : " + bigSpendName + ", сумма : " + bigSpend);
         }
     }
 
@@ -134,6 +134,7 @@ public class Main {
         for (Map.Entry<String, ArrayList<YearlyReportItem>> entry : data.entrySet()) {
             String nameYear = entry.getKey().split("\\.")[1];
             System.out.println("Рассматриваемый год : " + nameYear);
+
             ArrayList<YearlyReportItem> months = entry.getValue();
 
             for (YearlyReportItem currentMonth : months) {

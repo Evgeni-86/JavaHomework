@@ -1,6 +1,8 @@
 package Office;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -51,37 +53,34 @@ public class MonthlyReport {
         return spend;
     }
 
-
-//-------------------------------------------------------------------------------------
+/////////////////////////////////////////////////////////////////////////
     public static void readMonthlyReports(File directory) {
         try {
-
             for (File curFile : directory.listFiles()) {
                 if (curFile.getName().startsWith("m")) {
 
                     ArrayList<MonthlyReportItem> currentMonthly = new ArrayList<>();
 
-                    String currentReport = Files.readString(Path.of(curFile.getAbsolutePath()));
-                    String[] reportArr = currentReport.split("\n");
+                    BufferedReader bReader = new BufferedReader(new FileReader(curFile));
+                    bReader.readLine(); //пропустим первую строку
+                    String s;
+                    while ((s = bReader.readLine()) != null){
+                        String[] s_arr = s.split(",");
 
-                    for (int i = 1; i < reportArr.length; i++) {
                         MonthlyReportItem currentItem = new MonthlyReportItem();
 
-                        String[] rep = reportArr[i].split(",");
-
-                        currentItem.setItem_name(rep[0]);
-                        currentItem.setIs_expense(Boolean.parseBoolean(rep[1]));
-                        currentItem.setQuantity(Integer.parseInt(rep[2]));
-                        currentItem.setSum_of_one(Integer.parseInt(rep[3]));
+                        currentItem.setItem_name(s_arr[0]);
+                        currentItem.setIs_expense(Boolean.parseBoolean(s_arr[1]));
+                        currentItem.setQuantity(Integer.parseInt(s_arr[2]));
+                        currentItem.setSum_of_one(Integer.parseInt(s_arr[3]));
 
                         currentMonthly.add(currentItem);
                     }
 
                     dataReports.put(curFile.getName(), currentMonthly);
                 }
-
-                read = true;
             }
+            read = true;
             System.out.println("Done!");
 
         } catch (IOException e) {
@@ -91,10 +90,50 @@ public class MonthlyReport {
 
     }
 
-    //////////test
-    public static void main(String[] args) {
-        File file = new File("src/Office/Reports");
-        MonthlyReport.readMonthlyReports(file);
-    }
+//    //////////test
+//    public static void main(String[] args) {
+//        File file = new File("src/Office/Reports");
+//        MonthlyReport.readMonthlyReports(file);
+//    }
 
+
+
+//-------------------------------------------------------------------------------------
+//    public static void readMonthlyReports(File directory) {
+//        try {
+//
+//            for (File curFile : directory.listFiles()) {
+//                if (curFile.getName().startsWith("m")) {
+//
+//                    ArrayList<MonthlyReportItem> currentMonthly = new ArrayList<>();
+//
+//                    String currentReport = Files.readString(Path.of(curFile.getAbsolutePath()));
+//                    String[] reportArr = currentReport.split("\\r?\\n|\\r");
+//
+//                    for (int i = 1; i < reportArr.length; i++) {
+//                        MonthlyReportItem currentItem = new MonthlyReportItem();
+//
+//                        String[] rep = reportArr[i].split(",");
+//
+//                        currentItem.setItem_name(rep[0]);
+//                        currentItem.setIs_expense(Boolean.parseBoolean(rep[1]));
+//                        currentItem.setQuantity(Integer.parseInt(rep[2]));
+//                        currentItem.setSum_of_one(Integer.parseInt(rep[3]));
+//
+//                        currentMonthly.add(currentItem);
+//                    }
+//
+//                    dataReports.put(curFile.getName(), currentMonthly);
+//                }
+//
+//                read = true;
+//            }
+//            System.out.println("Done!");
+//
+//        } catch (IOException e) {
+//            System.out.println("данные не считались");
+//            e.printStackTrace();
+//        }
+//
+//    }
 }
