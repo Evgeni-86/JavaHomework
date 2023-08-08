@@ -58,6 +58,7 @@ public class MonthlyReport {
 
     /////////////////////////////////////////////////////////////////////////
     public static void readMonthlyReports(File directory) {
+        dataReports.clear();
         try {
             for (File curFile : directory.listFiles()) {
                 if (curFile.getName().startsWith("m")) {

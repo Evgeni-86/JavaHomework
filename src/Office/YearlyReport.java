@@ -27,7 +27,7 @@ public class YearlyReport {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     public static void readYearlyReports(File directory) {
-
+        dataReports.clear();
         try {
             for (File curFile : directory.listFiles()) {
                 if (curFile.getName().startsWith("y")) {
