@@ -8,10 +8,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.TreeMap;
 
 public class MonthlyReport {
     private static boolean read;
-    private static HashMap<String, ArrayList<MonthlyReportItem>> dataReports = new HashMap<>();
+    private static TreeMap<String, ArrayList<MonthlyReportItem>> dataReports = new TreeMap<>();
 
     private MonthlyReport() {
     }
@@ -20,9 +21,10 @@ public class MonthlyReport {
         return read;
     }
 
-    public static HashMap<String, ArrayList<MonthlyReportItem>> getDataReports() {
+    public static TreeMap<String, ArrayList<MonthlyReportItem>> getDataReports() {
         return dataReports;
     }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------------------------
     public static int getProfitMonthly(String monthly) {
@@ -38,7 +40,8 @@ public class MonthlyReport {
         }
         return profit;
     }
-//--------------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------------
     public static int getSpendMonthly(String monthly) {
         int spend = 0;
 
@@ -53,18 +56,21 @@ public class MonthlyReport {
         return spend;
     }
 
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
     public static void readMonthlyReports(File directory) {
         try {
             for (File curFile : directory.listFiles()) {
                 if (curFile.getName().startsWith("m")) {
 
                     ArrayList<MonthlyReportItem> currentMonthly = new ArrayList<>();
-
+                    //Можно было прочитать и Files.readAllLines(path) -> получим List<String>
                     BufferedReader bReader = new BufferedReader(new FileReader(curFile));
                     bReader.readLine(); //пропустим первую строку
                     String s;
-                    while ((s = bReader.readLine()) != null){
+                    while ((s = bReader.readLine()) != null) {
+                        if (s.length() == 0){
+                            continue;
+                        }
                         String[] s_arr = s.split(",");
 
                         MonthlyReportItem currentItem = new MonthlyReportItem();
@@ -83,9 +89,9 @@ public class MonthlyReport {
             read = true;
             System.out.println("Done!");
 
-        } catch (IOException e) {
-            System.out.println("данные не считались");
+        } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("данные не считались");
         }
 
     }
@@ -96,44 +102,4 @@ public class MonthlyReport {
 //        MonthlyReport.readMonthlyReports(file);
 //    }
 
-
-
-//-------------------------------------------------------------------------------------
-//    public static void readMonthlyReports(File directory) {
-//        try {
-//
-//            for (File curFile : directory.listFiles()) {
-//                if (curFile.getName().startsWith("m")) {
-//
-//                    ArrayList<MonthlyReportItem> currentMonthly = new ArrayList<>();
-//
-//                    String currentReport = Files.readString(Path.of(curFile.getAbsolutePath()));
-//                    String[] reportArr = currentReport.split("\\r?\\n|\\r");
-//
-//                    for (int i = 1; i < reportArr.length; i++) {
-//                        MonthlyReportItem currentItem = new MonthlyReportItem();
-//
-//                        String[] rep = reportArr[i].split(",");
-//
-//                        currentItem.setItem_name(rep[0]);
-//                        currentItem.setIs_expense(Boolean.parseBoolean(rep[1]));
-//                        currentItem.setQuantity(Integer.parseInt(rep[2]));
-//                        currentItem.setSum_of_one(Integer.parseInt(rep[3]));
-//
-//                        currentMonthly.add(currentItem);
-//                    }
-//
-//                    dataReports.put(curFile.getName(), currentMonthly);
-//                }
-//
-//                read = true;
-//            }
-//            System.out.println("Done!");
-//
-//        } catch (IOException e) {
-//            System.out.println("данные не считались");
-//            e.printStackTrace();
-//        }
-//
-//    }
 }

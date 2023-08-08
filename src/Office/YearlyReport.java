@@ -8,10 +8,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.TreeMap;
 
 public class YearlyReport {
     private static boolean read;
-    private static HashMap<String, ArrayList<YearlyReportItem>> dataReports = new HashMap<>();
+    private static TreeMap<String, ArrayList<YearlyReportItem>> dataReports = new TreeMap<>();
 
     private YearlyReport() {
     }
@@ -20,7 +21,7 @@ public class YearlyReport {
         return read;
     }
 
-    public static HashMap<String, ArrayList<YearlyReportItem>> getDataReports() {
+    public static TreeMap<String, ArrayList<YearlyReportItem>> getDataReports() {
         return dataReports;
     }
 
@@ -37,6 +38,9 @@ public class YearlyReport {
                     bReader.readLine(); //пропускаем первую строку
                     String s;
                     while ((s = bReader.readLine()) != null) {
+                        if (s.length() == 0){
+                            continue;
+                        }
                         String[] s_arr = s.split(",");
                         YearlyReportItem currentItem = new YearlyReportItem();
 
@@ -53,9 +57,9 @@ public class YearlyReport {
             read = true;
             System.out.println("Done!");
 
-        } catch (IOException e) {
-            System.out.println("данные не считались");
+        } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("данные не считались");
         }
 
     }
