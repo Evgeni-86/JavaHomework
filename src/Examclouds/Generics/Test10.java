@@ -5,3 +5,7 @@ public class Test10 {
 
     }
 }
+
+class Gen<T,K> {
+
+}

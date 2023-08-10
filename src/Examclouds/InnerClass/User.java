@@ -1,4 +1,4 @@
-package Examclouds.Generics;
+package Examclouds.InnerClass;
 
 public class User {
     private String login;

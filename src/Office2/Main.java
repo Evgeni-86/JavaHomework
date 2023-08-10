@@ -1,12 +1,14 @@
-package Office;
+package Office2;
 
 import java.io.File;
+import java.time.Year;
+import java.time.YearMonth;
 import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
 
-        File directory = new File("src/Office/Reports");
+        File directory = new File("src/Office2/Reports");
 
         loop:
         while (true) {
@@ -50,12 +52,12 @@ public class Main {
     }
 
     //------------------------------------------------------------------------------------------------
-    static public void checkReports(TreeMap<String, ArrayList<YearlyReportItem>> yearlyReportData,
-                                    TreeMap<String, ArrayList<MonthlyReportItem>> monthlyReportData) {
+    static public void checkReports(TreeMap<Year, ArrayList<YearlyReportItem>> yearlyReportData,
+                                    TreeMap<YearMonth, ArrayList<MonthlyReportItem>> monthlyReportData) {
 
-        for (Map.Entry<String, ArrayList<YearlyReportItem>> entryYear : yearlyReportData.entrySet()) {
+        for (Map.Entry<Year, ArrayList<YearlyReportItem>> entryYear : yearlyReportData.entrySet()) {
             //ГОД ОТЧЕТА 4 ЦИФРЫ
-            String currentYearNumber = entryYear.getKey().replaceAll(".(\\d{4})*", "$1");
+            int currentYearNumber = entryYear.getKey().getValue();
             //КОПИЯ МАССИВА ЭЛЕМЕНТОВ ГОДОВОГО ОТЧЕТА ЧТОБЫ ИЗ НЕЕ МОЖНО БЫЛО УДАЛЯТЬ
             LinkedList<YearlyReportItem> yearReportItemsArrayListCopy = new LinkedList<>(entryYear.getValue());
             StringBuilder checkProfit = new StringBuilder();
@@ -63,17 +65,16 @@ public class Main {
             StringBuilder checkAvailableProfit = new StringBuilder();
             StringBuilder checkAvailableSpend = new StringBuilder();
 
-
             //-------Цикл по месячным отчетам--------------------------------
-            for (Map.Entry<String, ArrayList<MonthlyReportItem>> entryMonth : monthlyReportData.entrySet()) {
-                String currentMonthReport = entryMonth.getKey();
-                String currentReportMonthYearNumber = currentMonthReport.replaceAll(".(\\d{4})*", "$1");
+            for (Map.Entry<YearMonth, ArrayList<MonthlyReportItem>> entryMonth : monthlyReportData.entrySet()) {
+                int currentMonthReportYear = entryMonth.getKey().getYear();
+                ;
                 //ЕСЛИ МЕСЯЦ НЕ ЭТОГО ГОДА -> БЕРЕМ СЛЕДУЮЩИЙ
-                if (!currentReportMonthYearNumber.equals(currentYearNumber)) {
+                if (currentMonthReportYear != currentYearNumber) {
                     continue;
                 }
 
-                int currentReportMonthNumber = Integer.parseInt(currentMonthReport.replaceAll(".(\\d{2})*", "$1"));
+                int currentReportMonthNumber = entryMonth.getKey().getMonthValue();
                 int yearReportItemAmountProfit = 0;
                 int yearReportItemAmountSpend = 0;
 
@@ -93,8 +94,8 @@ public class Main {
                     }
                 }
 
-                int profitCurrentMonthly = MonthlyReport.getProfitMonthly(currentMonthReport);
-                int spendCurrentMonthly = MonthlyReport.getSpendMonthly(currentMonthReport);
+                int profitCurrentMonthly = MonthlyReport.getProfitMonthly(entryMonth.getKey());
+                int spendCurrentMonthly = MonthlyReport.getSpendMonthly(entryMonth.getKey());
 
                 //ЕСЛИ ДАННЫЕ ГОДОВОГО ОТЧЕТА ПО МЕСЯЦУ НУЛЕВЫЕ ТО ЗАПИСЫВАЕМ (НЕТ ДАННЫХ)
                 //ИНАЧЕ СВЕРКА ДАННЫХ ТЕКУЩЕГО МЕСЯЦА С ГОДОВЫМ ОТЧЕТОМ И ЗАПИСЬ НЕСООТВЕТСТВИЯ
@@ -146,11 +147,11 @@ public class Main {
     }
 
     //-----------------------------------------------------------------------------------------------
-    static public void printMonthlyReports(TreeMap<String, ArrayList<MonthlyReportItem>> data) {
+    static public void printMonthlyReports(TreeMap<YearMonth, ArrayList<MonthlyReportItem>> data) {
 
-        for (Map.Entry<String, ArrayList<MonthlyReportItem>> entry : data.entrySet()) {
-            String nameMonth = entry.getKey().split("\\.")[1]; //берем строку только месяц
-            System.out.println("Название месяца : " + nameMonth);
+        for (Map.Entry<YearMonth, ArrayList<MonthlyReportItem>> entry : data.entrySet()) {
+            YearMonth nameMonth = entry.getKey(); //имя месячного отчета
+            System.out.println("Название месячного отчета : " + nameMonth);
 
             ArrayList<MonthlyReportItem> items = entry.getValue();
             String bigProfitName = "";
@@ -183,15 +184,15 @@ public class Main {
     }
 
     //-----------------------------------------------------------------------------------------------
-    static public void printYearsReports(TreeMap<String, ArrayList<YearlyReportItem>> data) {
+    static public void printYearsReports(TreeMap<Year, ArrayList<YearlyReportItem>> data) {
 
         int numberMonthly = -1;
         int sumMonth = 0;
         int profitGeneral = 0; //доход общий
         int spendGeneral = 0; //расход общий
 
-        for (Map.Entry<String, ArrayList<YearlyReportItem>> entry : data.entrySet()) {
-            String nameYear = entry.getKey().split("\\.")[1];
+        for (Map.Entry<Year, ArrayList<YearlyReportItem>> entry : data.entrySet()) {
+            Year nameYear = entry.getKey(); //Имя годового отчета
             System.out.println("Рассматриваемый год : " + nameYear);
 
             ArrayList<YearlyReportItem> months = entry.getValue();

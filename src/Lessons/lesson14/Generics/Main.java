@@ -1,2 +1,4 @@
-package Lessons.lesson14.Generics;public class Main {
+package Lessons.lesson14.Generics;
+
+public class Main {
 }

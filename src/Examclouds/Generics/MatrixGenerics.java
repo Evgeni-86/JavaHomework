@@ -1,2 +1,5 @@
-package Examclouds.Generics;public class MatrixGenerics {
+package Examclouds.Generics;
+
+public class MatrixGenerics {
+
 }

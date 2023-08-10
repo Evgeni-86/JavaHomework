@@ -1,9 +1,6 @@
 package Office;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -28,17 +25,22 @@ public class YearlyReport {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     public static void readYearlyReports(File directory) {
         dataReports.clear();
-        try {
-            for (File curFile : directory.listFiles()) {
-                if (curFile.getName().startsWith("y")) {
+        if (directory.listFiles() == null) {
+            System.out.println("не верный путь к файлам");
+            return;
+        }
 
-                    ArrayList<YearlyReportItem> currentYear = new ArrayList<>();
+        for (File curFile : directory.listFiles()) {
+            if (curFile.getName().startsWith("y")) {
 
-                    BufferedReader bReader = new BufferedReader(new FileReader(curFile));
+                ArrayList<YearlyReportItem> currentYear = new ArrayList<>();
+
+                try (BufferedReader bReader = new BufferedReader(new FileReader(curFile))) {
+
                     bReader.readLine(); //пропускаем первую строку
                     String s;
                     while ((s = bReader.readLine()) != null) {
-                        if (s.length() == 0){
+                        if (s.length() == 0) {
                             continue;
                         }
                         String[] s_arr = s.split(",");
@@ -52,16 +54,20 @@ public class YearlyReport {
                     }
 
                     dataReports.put(curFile.getName(), currentYear);
+
+                } catch (IOException e) {
+                    System.out.println("отчет не считан");
+                    throw new RuntimeException(e);
                 }
             }
-            read = true;
-            System.out.println("Done!");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("данные не считались");
         }
 
+        if (dataReports.size() > 0) {
+            read = true;
+            System.out.println("Done!");
+        } else {
+            System.out.println("отчеты не считаны");
+        }
     }
 
 //    //////////test

@@ -1,15 +1,17 @@
-package Office;
+package Office2;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.time.Year;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.TreeMap;
 
 public class YearlyReport {
     private static boolean read;
-    private static TreeMap<String, ArrayList<YearlyReportItem>> dataReports = new TreeMap<>();
+    private static final TreeMap<Year, ArrayList<YearlyReportItem>> dataReports = new TreeMap<>();
 
     private YearlyReport() {
     }
@@ -18,11 +20,11 @@ public class YearlyReport {
         return read;
     }
 
-    public static TreeMap<String, ArrayList<YearlyReportItem>> getDataReports() {
+    public static TreeMap<Year, ArrayList<YearlyReportItem>> getDataReports() {
         return dataReports;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //-------------------------------------------------------------------
     public static void readYearlyReports(File directory) {
         dataReports.clear();
         if (directory.listFiles() == null) {
@@ -33,7 +35,7 @@ public class YearlyReport {
         for (File curFile : directory.listFiles()) {
             if (curFile.getName().startsWith("y")) {
 
-                ArrayList<YearlyReportItem> currentYear = new ArrayList<>();
+                ArrayList<YearlyReportItem> currentYearReportItems = new ArrayList<>();
 
                 try (BufferedReader bReader = new BufferedReader(new FileReader(curFile))) {
 
@@ -50,10 +52,14 @@ public class YearlyReport {
                         currentItem.setAmount(Integer.parseInt(s_arr[1]));
                         currentItem.setIs_expense(Boolean.parseBoolean(s_arr[2]));
 
-                        currentYear.add(currentItem);
+                        currentYearReportItems.add(currentItem);
                     }
+                    //РАБОТА С ДАТОЙ
+                    String currentReportYearName = curFile.getName().replaceAll("\\D+", "");
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy");
+                    Year yearData = Year.parse(currentReportYearName,formatter);
 
-                    dataReports.put(curFile.getName(), currentYear);
+                    dataReports.put(yearData, currentYearReportItems);
 
                 } catch (IOException e) {
                     System.out.println("отчет не считан");
@@ -70,49 +76,10 @@ public class YearlyReport {
         }
     }
 
-//    //////////test
+    //    //////////test
 //    public static void main(String[] args) {
-//        File file = new File("src/Office/Reports");
+//        File file = new File("src/Office2/Reports");
 //        YearlyReport.readYearlyReports(file);
 //    }
 
-
-//    public static void readYearlyReports(File directory) {
-//
-//        try {
-//
-//            for (File curFile : directory.listFiles()) {
-//                if (curFile.getName().startsWith("y")) {
-//
-//                    ArrayList<YearlyReportItem> currentYear = new ArrayList<>();
-//
-//                    String currentReport = Files.readString(Path.of(curFile.getAbsolutePath()));
-//                    String[] reportArr = currentReport.split("\\r?\\n|\\r");
-//
-//                    for (int i = 1; i < reportArr.length; i++) {
-//                        YearlyReportItem currentItem = new YearlyReportItem();
-//
-//                        String[] rep = reportArr[i].split(",");
-//
-//                        currentItem.setMonth(Integer.parseInt(rep[0]));
-//                        currentItem.setAmount(Integer.parseInt(rep[1]));
-//                        currentItem.setIs_expense(Boolean.parseBoolean(rep[2]));
-//
-//                        currentYear.add(currentItem);
-//                    }
-//
-//                    dataReports.put(curFile.getName(), currentYear);
-//                }
-//
-//                read = true;
-//            }
-//            System.out.println("Done!");
-//
-//        } catch (IOException e) {
-//            System.out.println("данные не считались");
-//            e.printStackTrace();
-//        }
-//
-//    }
-//
 }

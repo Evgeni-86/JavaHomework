@@ -1,4 +1,4 @@
-package Office;
+package Office2;
 
 import java.util.Scanner;
 
