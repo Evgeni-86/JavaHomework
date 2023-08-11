@@ -22,19 +22,19 @@ public class NodeTest1 {
     }
 
     static public NodeTest1 createNodes() {
-        NodeTest1 head = new NodeTest1(10);
+        NodeTest1 head = new NodeTest1(1);
 
         LinkedList<NodeTest1> nodes = new LinkedList<>();
         nodes.add(head);
 
         int num = head.value;
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 3; i++) {
             NodeTest1 curNode = nodes.removeFirst();
 
-            curNode.left = new NodeTest1(num += 10);
+            curNode.left = new NodeTest1(1);
             nodes.addLast(curNode.left);
 
-            curNode.right = new NodeTest1(num += 10);
+            curNode.right = new NodeTest1(2);
             nodes.addLast(curNode.right);
         }
         return head;
