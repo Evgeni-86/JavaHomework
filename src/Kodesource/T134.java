@@ -1,6 +1,5 @@
 package Kodesource;
 
-import Kodesource.Resurses.NodeTest1;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -26,13 +25,6 @@ public class T134 {
             public Step(int value) {
                 this.value = value;
             }
-//            public void setStep1(int step1) {
-//                this.step1 = step1;
-//            }
-//
-//            public void setStep2(int step2) {
-//                this.step2 = step2;
-//            }
             public ArrayList<Integer> getRoad() {
                 return road;
             }
