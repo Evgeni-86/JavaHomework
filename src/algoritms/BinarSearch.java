@@ -1,4 +1,4 @@
-package Algoritms;
+package algoritms;
 
 public class BinarSearch {
 
