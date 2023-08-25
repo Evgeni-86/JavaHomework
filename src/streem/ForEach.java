@@ -11,8 +11,8 @@ public class ForEach {
             System.out.println(elem);
         });
 
-        Arrays.stream(array).forEach(System.out::print);
 
+        Arrays.stream(array).forEach(System.out::print);
 
     }
 }
