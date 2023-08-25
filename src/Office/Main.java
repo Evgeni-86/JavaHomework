@@ -54,14 +54,14 @@ public class Main {
                                     TreeMap<String, ArrayList<MonthlyReportItem>> monthlyReportData) {
 
         for (Map.Entry<String, ArrayList<YearlyReportItem>> entryYear : yearlyReportData.entrySet()) {
-            String nameCurrentYearReport = entryYear.getKey();
-            String currentYearNumber = nameCurrentYearReport.replaceAll(".(\\d{4})*", "$1");
+            //ГОД ОТЧЕТА 4 ЦИФРЫ
+            String currentYearNumber = entryYear.getKey().replaceAll(".(\\d{4})*", "$1");
             //КОПИЯ МАССИВА ЭЛЕМЕНТОВ ГОДОВОГО ОТЧЕТА ЧТОБЫ ИЗ НЕЕ МОЖНО БЫЛО УДАЛЯТЬ
             LinkedList<YearlyReportItem> yearReportItemsArrayListCopy = new LinkedList<>(entryYear.getValue());
             StringBuilder checkProfit = new StringBuilder();
             StringBuilder checkSpend = new StringBuilder();
-            StringBuilder checkProfitAvailable = new StringBuilder();
-            StringBuilder checkSpendAvailable = new StringBuilder();
+            StringBuilder checkAvailableProfit = new StringBuilder();
+            StringBuilder checkAvailableSpend = new StringBuilder();
 
 
             //-------Цикл по месячным отчетам--------------------------------
@@ -69,63 +69,45 @@ public class Main {
                 String currentMonthReport = entryMonth.getKey();
                 String currentReportMonthYearNumber = currentMonthReport.replaceAll(".(\\d{4})*", "$1");
                 //ЕСЛИ МЕСЯЦ НЕ ЭТОГО ГОДА -> БЕРЕМ СЛЕДУЮЩИЙ
-                if (!currentReportMonthYearNumber.equals(currentYearNumber)){
+                if (!currentReportMonthYearNumber.equals(currentYearNumber)) {
                     continue;
                 }
 
                 int currentReportMonthNumber = Integer.parseInt(currentMonthReport.replaceAll(".(\\d{2})*", "$1"));
-                int yearlyReportItemAmountProfit = 0;
-                int yearlyReportItemAmountSpend = 0;
+                int yearReportItemAmountProfit = 0;
+                int yearReportItemAmountSpend = 0;
 
                 //ИЩЕМ ДАННЫЕ О ТЕКУЩЕМ МЕСЯЦЕ В ТЕКУЩЕМ ГОДОВОМ ОТЧЕТЕ
                 Iterator<YearlyReportItem> iterator = yearReportItemsArrayListCopy.iterator();
-                while (iterator.hasNext()){
+                while (iterator.hasNext()) {
                     YearlyReportItem yearlyReportItem = iterator.next();
                     if (yearlyReportItem.getMonth() == currentReportMonthNumber) {
                         int itemAmount = yearlyReportItem.getAmount();
 
                         if (!yearlyReportItem.getIs_expense()) { //если строка дохода
-                            yearlyReportItemAmountProfit += itemAmount;
+                            yearReportItemAmountProfit += itemAmount;
                         } else {
-                            yearlyReportItemAmountSpend += itemAmount;
+                            yearReportItemAmountSpend += itemAmount;
                         }
                         iterator.remove();//удаление элемента после чтения
                     }
                 }
 
-//                for (int i = 0; i < yearReportItemsArrayListCopy.size(); i++) {
-//                    YearlyReportItem yearlyReportItem = yearReportItemsArrayListCopy.get(i);
-//
-//                    if (yearlyReportItem.getMonth() == currentReportMonthNumber) {
-//                        int itemAmount = yearlyReportItem.getAmount();
-//
-//                        if (!yearlyReportItem.getIs_expense()) { //если строка дохода
-//                            yearlyReportItemAmountProfit += itemAmount;
-//                        } else {
-//                            yearlyReportItemAmountSpend += itemAmount;
-//                        }
-//
-//                        yearReportItemsArrayListCopy.remove(i);//удаление элемента после чтения
-//                        i--;
-//                    }
-//                }
-
-                //ПОЛУЧЕНИЕ ДАННЫХ О ТЕКУЩЕМ МЕСЯЦЕ ИЗ МЕСЯЧНЫХ ОТЧЕТОВ
                 int profitCurrentMonthly = MonthlyReport.getProfitMonthly(currentMonthReport);
                 int spendCurrentMonthly = MonthlyReport.getSpendMonthly(currentMonthReport);
-                //СВЕРКА ДАННЫХ ТЕКУЩЕГО МЕСЯЦА В ГОДОВОМ ОТЧЕТЕ И ЗАПИСЬ НЕСООТВЕТСТВИЯ
-                if (profitCurrentMonthly != yearlyReportItemAmountProfit) {
+
+                //ЕСЛИ ДАННЫЕ ГОДОВОГО ОТЧЕТА ПО МЕСЯЦУ НУЛЕВЫЕ ТО ЗАПИСЫВАЕМ (НЕТ ДАННЫХ)
+                //ИНАЧЕ СВЕРКА ДАННЫХ ТЕКУЩЕГО МЕСЯЦА С ГОДОВЫМ ОТЧЕТОМ И ЗАПИСЬ НЕСООТВЕТСТВИЯ
+                if (yearReportItemAmountProfit == 0) {
+                    checkAvailableProfit.append("год : " + currentYearNumber + " месяц : " + currentReportMonthNumber + "\n");
+                } else if (yearReportItemAmountProfit != profitCurrentMonthly) {
                     checkProfit.append("год : " + currentYearNumber + " месяц : " + currentReportMonthNumber + "\n");
                 }
-                if (spendCurrentMonthly != yearlyReportItemAmountSpend) {
+
+                if (yearReportItemAmountSpend == 0) {
+                    checkAvailableSpend.append("год : " + currentYearNumber + " месяц : " + currentReportMonthNumber + "\n");
+                } else if (yearReportItemAmountSpend != spendCurrentMonthly) {
                     checkSpend.append("год : " + currentYearNumber + " месяц : " + currentReportMonthNumber + "\n");
-                }
-                //ЕСЛИ ДАННЫЕ ГОДОВОГО ПО МЕСЯЦУ НУЛЕВЫЕ (СКОРЕЕ ВСЕГО НЕТ ДАННЫХ)
-                if (yearlyReportItemAmountProfit == 0){
-                    checkProfitAvailable.append("год : " + currentYearNumber + " месяц : " + currentReportMonthNumber + "\n");
-                }
-                if (yearlyReportItemAmountSpend == 0){
-                    checkSpendAvailable.append("год : " + currentYearNumber + " месяц : " + currentReportMonthNumber + "\n");
                 }
 
             }
@@ -137,14 +119,15 @@ public class Main {
                     System.out.println("год : " + currentYearNumber + ", месяц : " + yearlyReport.getMonth() +
                             ", Is_expense : " + yearlyReport.getIs_expense());
                 }
+                System.out.println();
                 rezultChecking = false;
             }
-            if (checkProfitAvailable.length() > 0){
-                System.out.println("нет данных дохода, проверьте годовой отчет : \n" + checkProfitAvailable);
+            if (checkAvailableProfit.length() > 0) {
+                System.out.println("нет данных дохода, проверьте годовой отчет : \n" + checkAvailableProfit);
                 rezultChecking = false;
             }
-            if (checkSpendAvailable.length() > 0){
-                System.out.println("нет данных расхода, проверьте годовой отчет : \n" + checkSpendAvailable);
+            if (checkAvailableSpend.length() > 0) {
+                System.out.println("нет данных расхода, проверьте годовой отчет : \n" + checkAvailableSpend);
                 rezultChecking = false;
             }
             if (checkProfit.length() > 0) {
@@ -155,13 +138,12 @@ public class Main {
                 System.out.println("несоответствие отчетов расходы : \n" + checkSpend);
                 rezultChecking = false;
             }
-            if (rezultChecking){
+            if (rezultChecking) {
                 System.out.println("отчеты соответствуют");
             }
 
         }
     }
-
 
     //-----------------------------------------------------------------------------------------------
     static public void printMonthlyReports(TreeMap<String, ArrayList<MonthlyReportItem>> data) {
@@ -232,24 +214,6 @@ public class Main {
                 }
                 numberMonthly = currentMonth.getMonth(); //запомним текущий месяц
             }
-
-//            for (YearlyReportItem currentMonth : months) {
-//                //Запишем доход или расход за месяц
-//                if (!currentMonth.getIs_expense()) { //если строка доход
-//                    sumMonth += currentMonth.getAmount(); //прибавляем
-//                    profitGeneral += currentMonth.getAmount(); //увеличиваем общий доход
-//                } else {
-//                    sumMonth -= currentMonth.getAmount(); //вычитаем
-//                    spendGeneral += currentMonth.getAmount(); //увеличиваем общий расход
-//                }
-//                //Подсчет прибыли за месяц
-//                if (currentMonth.getMonth() == numberMonthly ||) {
-//                    System.out.println("Прибыль за " + Service.months[currentMonth.getMonth() - 1] + " = " + sumMonth);
-//                    sumMonth = 0;
-//                    numberMonthly = -1;//удаляем номер месяца из переменной
-//                }
-//                numberMonthly = currentMonth.getMonth(); //запомним текущий месяц
-//            }
 
             System.out.println("Средний расход за все месяцы в году : " + (spendGeneral / (months.size() / 2)));
             System.out.println("Средний доход за все месяцы в году : " + (profitGeneral / (months.size() / 2)));

@@ -1,9 +1,6 @@
 package Office;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -59,17 +56,22 @@ public class MonthlyReport {
     /////////////////////////////////////////////////////////////////////////
     public static void readMonthlyReports(File directory) {
         dataReports.clear();
-        try {
-            for (File curFile : directory.listFiles()) {
-                if (curFile.getName().startsWith("m")) {
+        if (directory.listFiles() == null) {
+            System.out.println("не верный путь к файлам");
+            return;
+        }
 
-                    ArrayList<MonthlyReportItem> currentMonthly = new ArrayList<>();
+        for (File curFile : directory.listFiles()) {
+            if (curFile.getName().startsWith("m")) {
+
+                ArrayList<MonthlyReportItem> currentMonthly = new ArrayList<>();
+
+                try (BufferedReader bReader = new BufferedReader(new FileReader(curFile))) {
                     //Можно было прочитать и Files.readAllLines(path) -> получим List<String>
-                    BufferedReader bReader = new BufferedReader(new FileReader(curFile));
                     bReader.readLine(); //пропустим первую строку
                     String s;
                     while ((s = bReader.readLine()) != null) {
-                        if (s.length() == 0){
+                        if (s.length() == 0) {
                             continue;
                         }
                         String[] s_arr = s.split(",");
@@ -85,17 +87,65 @@ public class MonthlyReport {
                     }
 
                     dataReports.put(curFile.getName(), currentMonthly);
+
+                } catch (IOException e) {
+                    System.out.println("отчет не считан");
+                    throw new RuntimeException(e);
                 }
             }
-            read = true;
-            System.out.println("Done!");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("данные не считались");
         }
 
+        if (dataReports.size() > 0) {
+            read = true;
+            System.out.println("Done!");
+        } else {
+            System.out.println("отчеты не считаны");
+        }
     }
+
+//    public static void readMonthlyReports(File directory) {
+//        dataReports.clear();
+//        try {
+//            for (File curFile : directory.listFiles()) {
+//                if (curFile.getName().startsWith("m")) {
+//
+//                    ArrayList<MonthlyReportItem> currentMonthly = new ArrayList<>();
+//                    //Можно было прочитать и Files.readAllLines(path) -> получим List<String>
+//                    BufferedReader bReader = new BufferedReader(new FileReader(curFile));
+//                    bReader.readLine(); //пропустим первую строку
+//                    String s;
+//                    while ((s = bReader.readLine()) != null) {
+//                        if (s.length() == 0) {
+//                            continue;
+//                        }
+//                        String[] s_arr = s.split(",");
+//
+//                        MonthlyReportItem currentItem = new MonthlyReportItem();
+//
+//                        currentItem.setItem_name(s_arr[0]);
+//                        currentItem.setIs_expense(Boolean.parseBoolean(s_arr[1]));
+//                        currentItem.setQuantity(Integer.parseInt(s_arr[2]));
+//                        currentItem.setSum_of_one(Integer.parseInt(s_arr[3]));
+//
+//                        currentMonthly.add(currentItem);
+//                    }
+//                    bReader.close();
+//                    dataReports.put(curFile.getName(), currentMonthly);
+//                }
+//            }
+//            if (dataReports.size() > 0) {
+//                read = true;
+//                System.out.println("Done!");
+//            } else {
+//                System.out.println("отчеты не считаны");
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            System.out.println("данные не считались");
+//        }
+//
+//    }
 
 //    //////////test
 //    public static void main(String[] args) {
