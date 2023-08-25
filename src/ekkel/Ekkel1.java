@@ -1,4 +1,4 @@
-package Ekkel;
+package ekkel;
 
 
 class Test {

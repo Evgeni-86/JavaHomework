@@ -1,4 +1,4 @@
-package Ekkel;
+package ekkel;
 
 import java.util.stream.IntStream;
 
