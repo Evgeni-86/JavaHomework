@@ -2,8 +2,8 @@ package patternsProject.creationalPatterns.singleton;
 
 import java.util.ArrayList;
 
-public class Singleton {
-    Singleton(){};
+public final class Singleton {
+    private Singleton(){};
 
     private static Singleton singleton;
     private static ArrayList<String> strings = new ArrayList<>();
