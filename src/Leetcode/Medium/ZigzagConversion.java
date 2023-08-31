@@ -7,48 +7,42 @@ public class ZigzagConversion {
     public static void main(String[] args) {
         String str = "PAYPALISHIRING";
 //        PAHNAPLSIIGYIR
-        test(str, 3);
+        System.out.println(test(str, 2));
     }
 
-    public static void test(String s, int numRows) {
+    public static String test(String s, int numRows) {
 
-        int startX = 0;
+        if (numRows < 2){
+            return s;
+        }
+
+        StringBuilder[] stringBuilders = new StringBuilder[numRows];
+        int currentX = 0;
         int startY = numRows - 1;
-
-        //coordinate y, index elem in string "s"
-        TreeMap<Integer, ArrayList<Integer>> temp = new TreeMap<>(new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                return o2.compareTo(o1);
-            }
-        });
+        int previosX = currentX;
 
         for (int i = 0; i < s.length(); i++) {
-            if (startY == 0) {
-                while (startY < numRows - 1) {
-                    addRows(startY, i, temp);
-                    startY++;
-                    startX++;
-                    i++;
-                }
-                i--;
-                continue;
+            if (stringBuilders[startY] == null) {
+                stringBuilders[startY] = new StringBuilder();
             }
-            addRows(startY--, i, temp);
-        }
+            stringBuilders[startY].append(s.charAt(i));
 
-        System.out.println(temp);
+            if (startY == 0 || previosX != currentX && startY < numRows - 1) {
+                startY++;
+                currentX++;
+            } else {
+                previosX = currentX;
+                startY--;
+            }
+        }
 
         StringBuilder stringBuilder = new StringBuilder();
-
-    }
-
-    private static void addRows(int startY, int index, TreeMap<Integer, ArrayList<Integer>> temp) {
-        ArrayList<Integer> indexs = temp.get(startY);
-        if (indexs != null) {
-            indexs.add(index);
-            return;
+        for (StringBuilder builder : stringBuilders) {
+            if (builder != null){
+                stringBuilder.insert(0, builder);
+            }
         }
-        temp.put(startY, new ArrayList<Integer>(List.of(index)));
+
+        return stringBuilder.toString();
     }
 }

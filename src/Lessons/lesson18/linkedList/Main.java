@@ -10,12 +10,21 @@ public class Main {
         integerNodeList.add(15);
 
 
+
+        integerNodeList.add(77);
+
+        integerNodeList.remove(5);
+
         System.out.println(integerNodeList.printAll());
 
-        integerNodeList.removeByIndex(3);
+        integerNodeList.insertByIndex(88,2);
 
         System.out.println(integerNodeList.printAll());
 
-        System.out.println(integerNodeList.getSize());
+        integerNodeList.remove(null);
+        integerNodeList.insertByIndex(null,-1);
+
+        System.out.println(integerNodeList.printAll());
+
     }
 }

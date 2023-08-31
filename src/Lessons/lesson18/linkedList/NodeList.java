@@ -1,63 +1,84 @@
 package Lessons.lesson18.linkedList;
 
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class NodeList<T> {
 
     private Node<T> head;
     private Node<T> tail;
     private int size;
-    private int counter = 0;
+    private int counter = 0;//для сравнения при обходе (сбрасывается в runByElements)
 
     public T add(T node) {
+        if (node == null) {
+            return null;
+        }
         Node<T> newNode = new Node<>(node);
         if (head == null) {
             head = newNode;
         } else {
-            tail.setNext(newNode);
-            newNode.setPrev(tail);//текущий хвост для нового элемента становиться предыдущим элементом
+            connectElements(tail, newNode);
         }
         tail = newNode;
         size++;
+
         return newNode.getValue();
     }
 
-    public void remove(T elementToRemove) {
+    public T insertByIndex(T elementForInsertion, int index) {
+        runByElements(elem -> {
+            if (index == counter++) {
+                Node<T> insertNode = new Node<>(elementForInsertion);
+                connectElements(elem.getPrev(), insertNode);
+                connectElements(insertNode, elem);
+                size++;
+                return true;
+            }
+            return false;
+        });
+        return elementForInsertion;
+    }
+
+    public T remove(T elementToRemove) {
         runByElements(elem -> {
             if (elem.getValue().equals(elementToRemove)) {
-                updateLinks(elem);
+                connectElements(elem.getPrev(), elem.getNext());
                 size--;
+                return true;
             }
+            return false;
         });
+        return elementToRemove;
     }
 
     public void removeByIndex(int index) {
         runByElements(elem -> {
-            if (index == counter){
-                updateLinks(elem);
+            if (index == counter++) {
+                connectElements(elem.getPrev(), elem.getNext());
                 size--;
+                return true;
             }
-            counter++;
+            return false;
         });
-        counter = 0;
     }
 
-    private void updateLinks(Node<T> elementToRemove){
-        Node<T> prevElement = elementToRemove.getPrev();
-        Node<T> nextElement = elementToRemove.getNext();
-        if (prevElement != null) {
-            prevElement.setNext(nextElement);
+    private void connectElements(Node<T> elementOne, Node<T> elementTwo) {
+        if (elementOne != null) {
+            elementOne.setNext(elementTwo);
         } else {
-            head = head.getNext();
+            head = elementTwo;
         }
-        if (nextElement != null) {
-            nextElement.setPrev(prevElement);
+
+        if (elementTwo != null) {
+            elementTwo.setPrev(elementOne);
         }
     }
 
     public String printAll() {
         StringBuilder out = new StringBuilder();
-        runByElements(elem -> out.append(elem.getValue() + " "));
+        runByElements(elem -> {
+            out.append(elem.getValue()).append(" ");
+            return false;
+        });
         return out.toString();
     }
 
@@ -65,16 +86,19 @@ public class NodeList<T> {
         return size;
     }
 
-    private void runByElements(optionsElement<T> func) {
+    private void runByElements(elementAction<T> func) {
         Node<T> currentElem = head;
         while (currentElem != null) {
-            func.someDo(currentElem);
+            if (func.someDo(currentElem)) {
+                break;
+            }
             currentElem = currentElem.getNext();
         }
+        counter = 0;
     }
 
-    interface optionsElement<T> {
-        void someDo(Node<T> elem);
+    interface elementAction<T> {
+        boolean someDo(Node<T> elem);
     }
 
 }
