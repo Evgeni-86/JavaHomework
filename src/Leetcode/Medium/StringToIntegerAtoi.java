@@ -1,35 +1,40 @@
 package Leetcode.Medium;
 
-import javax.swing.text.AttributeSet;
 
 public class StringToIntegerAtoi {
     public static void main(String[] args) {
-        String s = "__   -42";
-        test(s);
+        String s = "__   - 4 2";
+        System.out.println(test(s));
     }
 
-    public static void test(String s){
+    public static int test(String s) {
 
         StringBuilder sb = new StringBuilder();
-        Character previosChar = '+';
+        char prev = '+';
 
-        int index = 0;
-        while (index < s.length()){
-
-            if(Character.isDigit(s.charAt(index))){
-                sb.append(s.charAt(index));
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == ' ') {
+                continue;
             }
-
-            if (Character.isDigit(previosChar)){
-                if (previosChar == '-'){
-                    sb.insert(0, previosChar);
+            if (Character.isDigit(s.charAt(i))) {
+                if (prev == '-') {
+                    sb.append(prev);
+                    prev = '+';
                 }
+                sb.append(s.charAt(i));
+                prev = s.charAt(i);
+                continue;
+            }
+            if (Character.isDigit(prev)) {
                 break;
             }
-
-            index++;
+            prev = s.charAt(i);
         }
 
-        System.out.println(sb);
+        long res = Long.valueOf(sb.toString());
+        if (res > Integer.MIN_VALUE && res < Integer.MAX_VALUE) {
+            return (int) res;
+        }
+        return 0;
     }
 }
