@@ -214,27 +214,32 @@ public class Main {
 //        }
 
         //-----------------------------------------
+
+
+
+    }
+
+}
+
+
+class TestSerial {
+
+    String name;
+    int course;
+    static int count;
+
+    public TestSerial(String name2, int course2) {
+        count++;
+        name = name2;
+        course = course2;
+    }
+
+
+    public static void main(String[] args) {
+        TestSerial testSerial = new TestSerial("aaa",1);
+        TestSerial testSerial2 = new TestSerial("bbbb",2);
+        System.out.println(count);
+        System.out.println(testSerial2.count);
     }
 }
 
-
-class TestSerial implements Serializable {
-
-    String name = "TestSerialName";
-    int id = 45;
-    int number = 12;
-    transient TestSerialNotSerial testSerialNotSerial = new TestSerialNotSerial();
-
-}
-
-class TestSerial2 implements Serializable {
-
-    String name = "TestSerial2Name";
-    int id = 20;
-    transient int number = 10;
-
-}
-
-class TestSerialNotSerial {
-    String name = "TestSerialNotSerialName";
-}
