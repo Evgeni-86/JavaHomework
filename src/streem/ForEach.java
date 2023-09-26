@@ -1,6 +1,10 @@
 package streem;
 
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class ForEach {
     public static void main(String[] args) {
@@ -14,5 +18,9 @@ public class ForEach {
 
         Arrays.stream(array).forEach(System.out::print);
 
+
     }
+
 }
+
+
