@@ -58,10 +58,7 @@ public class WeightGraph {
                 }
                 stack.add(edge.getDestination());
             }
-//            for (Map.Entry<Vertex, Integer> entry : costsUpdate.entrySet()) {
-//                System.out.println(entry.getKey().getName() + " : " + entry.getValue());
-//            }
-//            System.out.println("-------------------------------");
+
         }
         System.out.println("---RESULT---------");
         System.out.println(VertexCosts.get(end));
