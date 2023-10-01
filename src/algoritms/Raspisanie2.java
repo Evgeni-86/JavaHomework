@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Test2 {
+public class Raspisanie2 {
 
     public static void main(String[] args) {
 

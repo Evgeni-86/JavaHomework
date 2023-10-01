@@ -1,4 +1,4 @@
-package algoritms;
+package algoritms.WeightGraf;
 
 import java.util.*;
 
@@ -68,6 +68,9 @@ public class WeightGraph {
             end = VertexParent.get(end);
         }
     }
+
+
+
 }
 
 //----------------------------------

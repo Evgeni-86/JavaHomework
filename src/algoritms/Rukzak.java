@@ -6,180 +6,47 @@ public class Rukzak {
 
     public static void main(String[] args) {
 
-        List<String> predmet = new ArrayList<>(Arrays.asList("гитара", "магнитофон", "ноутбук"));
-        int[] stoimostPredmeta = new int[]{1500, 3000, 2000};
-        int[] vesPredmeta = new int[]{1, 4, 3};
+        String[] predmet = new String[]{"магнитофон", "ноутбук", "гитара"};
+        int[] stoimostPredmeta = new int[]{3000, 2000, 1500};
+        int[] vesPredmeta = new int[]{4, 3, 1};
         int[] razmerRukzaka = new int[]{1, 2, 3, 4};
-        Cell[][] tablitca = new Cell[3][4];
+        Cell[][] tablitca = new Cell[predmet.length][razmerRukzaka.length];
 
 
-        for (int i = 0; i < 3; i++) {
 
-            for (int j = 0; j < tablitca[i].length; j++) {//по столбцам 0 - 4
+        for (int i = 0; i < predmet.length; i++) {
+
+            for (int j = 0; j < tablitca[i].length; j++) {//по столбцам в линии
                 int currenRazmerRukzaka = razmerRukzaka[j];
-
                 if (tablitca[i][j] == null) {
                     tablitca[i][j] = new Cell();
                 }
-
-                //----------------------------
-                String currentPredmetName = predmet.get(i);
-                int cenaCurrentPredmetMaxTemp = stoimostPredmeta[i];
-                int currentVes = vesPredmeta[i];
-
-                //-----------------------
                 int svobodnoeProstranstvo = (j + 1) - tablitca[i][j].ves;
 
-                if (i > 0){
-
-                    if (svobodnoeProstranstvo > 0) {//если оставшееся пространство 0
-
-                        if (currentVes == svobodnoeProstranstvo){
-                            tablitca[i][j].value = currentPredmetName;
-                            tablitca[i][j].stoimost = cenaCurrentPredmetMaxTemp;
-                            tablitca[i][j].ves = currentVes;
-                        }
-
-                        if ((svobodnoeProstranstvo - currentVes) > 0) {
-                            int stoimosPreviosLinelement = tablitca[i - 1][j].stoimost;
-
-                            int stoimostDopolnitElem = tablitca[i - 1][(svobodnoeProstranstvo - currentVes) - 1].stoimost;
-                            System.out.println("stoimosPreviosLinelement " + stoimosPreviosLinelement);
-                            System.out.println("stoimostDopolnitElem " + stoimostDopolnitElem);
-                            int soimostCurrentAndDopolnitElement = cenaCurrentPredmetMaxTemp +
-                                    (tablitca[i - 1][svobodnoeProstranstvo - 1].stoimost);
-
-//                            System.out.println("stoimosPreviosLinelement " + stoimosPreviosLinelement +
-//                                    "  " + "soimostCurrentAndDopolnitElement " + soimostCurrentAndDopolnitElement);
-
-                        }
-                    }
-                } else {
-                    tablitca[i][j].value = currentPredmetName;
-                    tablitca[i][j].stoimost = cenaCurrentPredmetMaxTemp;
-                    tablitca[i][j].ves = currentVes;
+                Cell dopolnitElement = new Cell();
+                if (i > 0 && ((svobodnoeProstranstvo - vesPredmeta[i]) - 1) >= 0) { //останется пространство если добавить текущий предмет
+                    dopolnitElement = tablitca[i - 1][(svobodnoeProstranstvo - vesPredmeta[i]) - 1];
                 }
 
+                Cell elementPredLinii = new Cell();
+                if (i > 0) {
+                    elementPredLinii = tablitca[i - 1][j];
+                }
 
+                int soimostCurrentAndDopolnitElement = stoimostPredmeta[i] + dopolnitElement.stoimost;
+                //выбираем из двух вариантов
+                if (vesPredmeta[i] <= currenRazmerRukzaka && soimostCurrentAndDopolnitElement > elementPredLinii.stoimost) {
 
+                    tablitca[i][j].value.add(predmet[i]);
+                    tablitca[i][j].value.addAll(dopolnitElement.value);
+                    tablitca[i][j].stoimost = stoimostPredmeta[i] + dopolnitElement.stoimost;
+                    tablitca[i][j].ves = vesPredmeta[i] + dopolnitElement.ves;
+                } else {
 
-
-
-
-                //---------------------------
-//                if (i > 0){
-//
-//                    if (vesPredmeta[i] > currenRazmerRukzaka){
-//                        Cell previosLineCell = tablitca[i - 1][j];
-//                        tablitca[i][j] = previosLineCell;
-//                    }
-//
-//                    if (vesPredmeta[i] <= currenRazmerRukzaka){
-//                        int svobodnoeProstranstvo = (j + 1) - currentVes;
-//                        System.out.println(svobodnoeProstranstvo + " " + currentPredmetName + " " + currentVes);
-//
-//                        if (svobodnoeProstranstvo > 0) {//если оставшееся пространство больше 0
-//
-//                            int stoimosPreviosLinelement = tablitca[i - 1][j].stoimost;
-//
-//                            int stoimostDopolnitElem = tablitca[i - 1][svobodnoeProstranstvo - 1].stoimost;
-//                            System.out.println("stoimostDopolnitElem " + stoimostDopolnitElem);
-//                            int soimostCurrentAndDopolnitElement = cenaCurrentPredmetMaxTemp +
-//                                    (tablitca[i - 1][svobodnoeProstranstvo - 1].stoimost);
-//
-//                            System.out.println("stoimosPreviosLinelement " + stoimosPreviosLinelement +
-//                                    "  " + "soimostCurrentAndDopolnitElement " + soimostCurrentAndDopolnitElement);
-//                        }
-//                        else {
-//
-//                            tablitca[i][j].value = currentPredmetName;
-//                            tablitca[i][j].stoimost = cenaCurrentPredmetMaxTemp;
-//                            tablitca[i][j].ves = currentVes;
-//                        }
-//                    }
-//
-//
-//
-//                }
-//
-//                    tablitca[i][j].value = currentPredmetName;
-//                    tablitca[i][j].stoimost = cenaCurrentPredmetMaxTemp;
-//                    tablitca[i][j].ves = currentVes;
-//                //-----------------------
-
-
-
-
-//                //-----------------------
-//                if (i > 0){
-//
-//                    if (vesPredmeta[i] > currenRazmerRukzaka){
-//                        Cell previosLineCell = tablitca[i - 1][j];
-//                        tablitca[i][j] = previosLineCell;
-//                    }
-//
-//                    if (vesPredmeta[i] <= currenRazmerRukzaka){
-//                        int svobodnoeProstranstvo = (j + 1) - currentVes;
-//                        System.out.println(svobodnoeProstranstvo + " " + currentPredmetName + " " + currentVes);
-//
-//                        if (svobodnoeProstranstvo > 0) {//если оставшееся пространство больше 0
-//
-//                            int stoimosPreviosLinelement = tablitca[i - 1][j].stoimost;
-//
-//                            int stoimostDopolnitElem = tablitca[i - 1][svobodnoeProstranstvo - 1].stoimost;
-//                            System.out.println("stoimostDopolnitElem " + stoimostDopolnitElem);
-//                            int soimostCurrentAndDopolnitElement = cenaCurrentPredmetMaxTemp +
-//                                    (tablitca[i - 1][svobodnoeProstranstvo - 1].stoimost);
-//
-//                            System.out.println("stoimosPreviosLinelement " + stoimosPreviosLinelement +
-//                                    "  " + "soimostCurrentAndDopolnitElement " + soimostCurrentAndDopolnitElement);
-//                        }
-//                        else {
-//
-//                            tablitca[i][j].value = currentPredmetName;
-//                            tablitca[i][j].stoimost = cenaCurrentPredmetMaxTemp;
-//                            tablitca[i][j].ves = currentVes;
-//                        }
-//                    }
-//
-//
-//
-//                } else {
-//                    tablitca[i][j].value = currentPredmetName;
-//                    tablitca[i][j].stoimost = cenaCurrentPredmetMaxTemp;
-//                    tablitca[i][j].ves = currentVes;
-//                }
-//                //-----------------------
-
-
-
-
-//                if (vesPredmeta[i] <= currenRazmerRukzaka) {
-//
-//                    int svobodnoeProstranstvo = (j + 1) - currentVes;
-//                    System.out.println(svobodnoeProstranstvo + " " + currentPredmetName + " " + currentVes);
-//
-//                    if (i > 0 && svobodnoeProstranstvo > 0) {//если оставшееся пространство больше 0
-//
-//                        int stoimosPreviosLinelement = tablitca[i - 1][j].stoimost;
-//
-//                        int stoimostDopolnitElem = tablitca[i - 1][svobodnoeProstranstvo - 1].stoimost;
-//                        System.out.println("stoimostDopolnitElem " + stoimostDopolnitElem);
-//                        int soimostCurrentAndDopolnitElement = cenaCurrentPredmetMaxTemp +
-//                                (tablitca[i - 1][svobodnoeProstranstvo - 1].stoimost);
-//
-//                        System.out.println("stoimosPreviosLinelement " + stoimosPreviosLinelement +
-//                                "  " + "soimostCurrentAndDopolnitElement " + soimostCurrentAndDopolnitElement);
-//                    } else {
-//
-//                        tablitca[i][j].value = currentPredmetName;
-//                        tablitca[i][j].stoimost = cenaCurrentPredmetMaxTemp;
-//                        tablitca[i][j].ves = currentVes;
-//                    }
-//
-//                }
-                //----------------------------
-
+                    tablitca[i][j].value.addAll(elementPredLinii.value);
+                    tablitca[i][j].stoimost += elementPredLinii.stoimost;
+                    tablitca[i][j].ves += elementPredLinii.ves;
+                }
             }
         }
 
@@ -199,7 +66,7 @@ public class Rukzak {
 }
 
 class Cell {
-    String value = "";
+    ArrayList<String> value = new ArrayList<>();
     int ves;
     int stoimost;
 

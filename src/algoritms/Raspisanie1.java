@@ -2,7 +2,7 @@ package algoritms;
 
 import java.util.*;
 
-public class Test {
+public class Raspisanie1 {
 
 
     public static void main(String[] args) {
