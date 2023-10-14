@@ -9,8 +9,8 @@ public class TrainWork {
 
     public static void main(String[] args) {
 
-//        List<Integer> train = new ArrayList<>(Arrays.asList(32, 54, 21, 12, 4, 0, 23));
-        List<Integer> train = new ArrayList<>();
+        List<Integer> train = new ArrayList<>(Arrays.asList(32, 54, 21, 12, 4, 0, 23));
+//        List<Integer> train = new ArrayList<>();
         int quantitySeats = 75;
 
         System.out.println(train);
@@ -23,10 +23,10 @@ public class TrainWork {
 
             int quantityPassenger = Integer.parseInt(input.replaceAll("[^0-9]", ""));
 
-            if (input.toLowerCase().startsWith("add")) {
+            if (Character.isLetter(input.charAt(0)) && quantityPassenger <= quantitySeats) {
                 train.add(quantityPassenger);
 
-            } else {
+            } else if (Character.isDigit(input.charAt(0))) {
 
                 for (int i = 0; i < train.size(); i++) {
                     int freeSeats = quantitySeats - train.get(i);

@@ -1,4 +1,4 @@
-package algoritms;
+package algoritms.greedyAlg;
 
 import java.util.ArrayList;
 import java.util.HashMap;

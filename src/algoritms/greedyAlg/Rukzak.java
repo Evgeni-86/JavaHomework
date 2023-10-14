@@ -1,5 +1,6 @@
-package algoritms;
+package algoritms.greedyAlg;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class Rukzak {
@@ -8,24 +9,20 @@ public class Rukzak {
 
         String[] predmet = new String[]{"магнитофон", "ноутбук", "гитара"};
         int[] stoimostPredmeta = new int[]{3000, 2000, 1500};
-        int[] vesPredmeta = new int[]{4, 3, 1};
-        int[] razmerRukzaka = new int[]{1, 2, 3, 4};
-        Cell[][] tablitca = new Cell[predmet.length][razmerRukzaka.length];
+        double[] vesPredmeta = new double[]{4, 3, 1};
+        List<Double> razmerRukzaka = Arrays.asList(1.0, 2.0, 3.0, 4.0);
 
-
+        Cell[][] tablitca = new Cell[predmet.length][razmerRukzaka.size()];
 
         for (int i = 0; i < predmet.length; i++) {
 
-            for (int j = 0; j < tablitca[i].length; j++) {//по столбцам в линии
-                int currenRazmerRukzaka = razmerRukzaka[j];
-                if (tablitca[i][j] == null) {
-                    tablitca[i][j] = new Cell();
-                }
-                int svobodnoeProstranstvo = (j + 1) - tablitca[i][j].ves;
+            for (int j = 0; j < tablitca[i].length; j++) {//по столбцам в линии (j как размер рюкзака)
+                tablitca[i][j] = new Cell();
 
                 Cell dopolnitElement = new Cell();
-                if (i > 0 && ((svobodnoeProstranstvo - vesPredmeta[i]) - 1) >= 0) { //останется пространство если добавить текущий предмет
-                    dopolnitElement = tablitca[i - 1][(svobodnoeProstranstvo - vesPredmeta[i]) - 1];
+                if (i > 0 && (razmerRukzaka.get(j) - vesPredmeta[i]) > 0) { //останется ли пространство если добавить текущий предмет
+                    int indexPodchodashegoVesa = razmerRukzaka.indexOf(razmerRukzaka.get(j) - vesPredmeta[i]);
+                    dopolnitElement = tablitca[i - 1][indexPodchodashegoVesa];
                 }
 
                 Cell elementPredLinii = new Cell();
@@ -35,7 +32,7 @@ public class Rukzak {
 
                 int soimostCurrentAndDopolnitElement = stoimostPredmeta[i] + dopolnitElement.stoimost;
                 //выбираем из двух вариантов
-                if (vesPredmeta[i] <= currenRazmerRukzaka && soimostCurrentAndDopolnitElement > elementPredLinii.stoimost) {
+                if (vesPredmeta[i] <= razmerRukzaka.get(j) && soimostCurrentAndDopolnitElement > elementPredLinii.stoimost) {
 
                     tablitca[i][j].value.add(predmet[i]);
                     tablitca[i][j].value.addAll(dopolnitElement.value);
@@ -67,7 +64,7 @@ public class Rukzak {
 
 class Cell {
     ArrayList<String> value = new ArrayList<>();
-    int ves;
+    double ves;
     int stoimost;
 
     @Override
