@@ -1,4 +1,4 @@
-package DZ2;
+// package DZ2;
 
 public class Airport {
     private final String name;

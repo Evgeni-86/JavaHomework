@@ -1,7 +1,7 @@
-package DZ2;
+// package DZ2;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
+import java.time.*;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -113,19 +113,19 @@ public class Practicum {
         // Добавьте проверку на случай задержки.
         if (delay > 0) {
             // Определите продолжительность задержки.
-            Duration delayDuration = null;
+            Duration delayDuration = Duration.ofMinutes(delay);
             // Вычислите время вылета с учётом задержки.
-            ZonedDateTime departureWithDelay = null;
+            ZonedDateTime departureWithDelay = departure.plus(delayDuration);
             // Вычислите время прилёта с учётом задержки.
-            ZonedDateTime arrivalWithDelay = null;
+            ZonedDateTime arrivalWithDelay = arrival.plus(delayDuration);
 
             System.out.println("Ваш вылет задерживается.");
             // Выведите продолжительность задержки в формате часы:минуты
-            System.out.println("Задержка: " + delayDuration);
+            System.out.println("Задержка: " + String.format("%02d:%02d", delay / 60, delay % 60));
             // Выведите отформатированное время вылета с учётом задержки.
-            System.out.println("Обновлённое время вылета: " + departureWithDelay);
+            System.out.println("Обновлённое время вылета: " + departureWithDelay.format(DATE_TIME_FORMATTER));
             // Выведите отформатированное время прилёта с учётом задержки.
-            System.out.println("Обновлённое время прилёта: " + arrivalWithDelay);
+            System.out.println("Обновлённое время прилёта: " + arrivalWithDelay.format(DATE_TIME_FORMATTER));
         } else {
             System.out.println("Удачного полёта!");
         }

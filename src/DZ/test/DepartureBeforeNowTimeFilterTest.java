@@ -4,8 +4,10 @@ import DZ.source.DepartureBeforeNowTimeFilter;
 import DZ.source.Flight;
 import DZ.source.Segment;
 import org.junit.jupiter.api.*;
+
 import java.time.LocalDateTime;
 import java.util.Arrays;
+
 
 
 class DepartureBeforeNowTimeFilterTest {
@@ -32,7 +34,6 @@ class DepartureBeforeNowTimeFilterTest {
     @DisplayName("IfCurrentTimeMoreOrEqualsDepartureTime")
     void filterTrue() {
         //TODO: текущая дата в тесте и текущая дата в методе тестируемого класса должны совпадать в моменте (добавить в конструктор flightsFilter)
-        date = LocalDateTime.now();
         Segment segment1 = new Segment(date, date);
         Segment segment2 = new Segment(date.plusSeconds(1), date.plusSeconds(2));
         Flight flight = new Flight(Arrays.asList(segment1, segment2));
