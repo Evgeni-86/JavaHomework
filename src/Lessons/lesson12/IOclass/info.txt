@@ -1,6 +1,0 @@
-FileWriter  FileReader
-
-BufferedWriter  BufferedReader
-
-FileInputStream FileOutputStream
-

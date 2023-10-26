@@ -1,4 +1,4 @@
-// package DZ2;
+package DZ2;
 
 import java.time.Duration;
 import java.time.*;
@@ -19,7 +19,7 @@ public class Practicum {
                 "12:15 02.11.21",
                 "VKO",
                 "LED",
-                30,
+                300,
                 1,
                 55
         );
@@ -121,7 +121,8 @@ public class Practicum {
 
             System.out.println("Ваш вылет задерживается.");
             // Выведите продолжительность задержки в формате часы:минуты
-            System.out.println("Задержка: " + String.format("%02d:%02d", delay / 60, delay % 60));
+//            System.out.printf("Задержка: %02d:%02d\n", delayDuration.toMinutes() / 60, delayDuration.toMinutes() % 60);
+            System.out.printf("Задержка: %02d:%02d\n", delayDuration.toHoursPart(), delayDuration.toMinutesPart());
             // Выведите отформатированное время вылета с учётом задержки.
             System.out.println("Обновлённое время вылета: " + departureWithDelay.format(DATE_TIME_FORMATTER));
             // Выведите отформатированное время прилёта с учётом задержки.
