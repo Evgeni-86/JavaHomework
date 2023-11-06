@@ -1,47 +1,37 @@
-/*
-Input: nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3
-Output: [1,2,2,3,5,6]
-Explanation: The arrays we are merging are [1,2,3] and [2,5,6].
-The result of the merge is [1,2,2,3,5,6] with the underlined elements coming from nums1.
-*/
+package Leetcode.Easy;
 
-import java.util.*;
-
+import java.util.Arrays;
 
 public class MergeSortedArray_88 {
     public static void main(String[] args) {
-        int[] arr1 = {-1, 1, 4, 6};
-        int[] arr2 = {0, 2, 5};
-        merge(arr1, 2, arr2, 2);
+        int[] arr1 = {4,5,6,0,0,0};
+        int[] arr2 = {1,2,3};
+        merge(arr1, 3, arr2, 3);
     }
 
     public static void merge(int[] nums1, int m, int[] nums2, int n) {
-        List<Integer> result = new ArrayList<>();
 
-        int index_arr_one = 0;
-        int index_arr_two = 0;
+        int labelArrOne = m - 1;
+        int labelArrTwo = n - 1;
+        int labelMax = m + n - 1;
 
-        while (index_arr_one < nums1.length || index_arr_two < nums2.length) {
-
-            int num_left = 0;
-            int num_right = 0;
-            if (index_arr_one < nums1.length) {
-                num_left = nums1[index_arr_one];
+        while (labelArrOne >= 0 && labelArrTwo >= 0) {
+            if (nums1[labelArrOne] > nums2[labelArrTwo]) {
+                nums1[labelMax] = nums1[labelArrOne];
+                labelArrOne--;
+                labelMax--;
             }
-            if (index_arr_two < nums2.length) {
-                num_right = nums2[index_arr_two];
+            else {
+                nums1[labelMax] = nums2[labelArrTwo];
+                labelArrTwo--;
+                labelMax--;
             }
-            System.out.println("num_left " + num_left + " num_right " + num_right);
-
-            if (num_left <= num_right && index_arr_one < nums1.length || index_arr_two == nums2.length) {
-                result.add(num_left);
-                index_arr_one++;
-            } else if (index_arr_two < nums2.length) {
-                result.add(num_right);
-                index_arr_two++;
-            }
-
-            System.out.println(result);
         }
+
+        while (labelArrOne >= 0 || labelArrTwo >= 0) {
+            nums1[labelMax--] = (labelArrOne < 0) ? nums2[labelArrTwo--] : nums1[labelArrOne--];
+        }
+
+        System.out.println(Arrays.toString(nums1));
     }
 }
