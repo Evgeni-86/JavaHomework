@@ -24,6 +24,7 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="mockito.junit.jupiter" level="project" />
+    <orderEntry type="library" name="jl1.0" level="project" />
   </component>
   <component name="SonarLintModuleSettings">
     <option name="uniqueId" value="af1aec8c-4d97-4b2f-b0f7-f15aa2c505a5" />

@@ -20,7 +20,7 @@ public class Base {
 
 class Derived extends Base {
 
-    private int j = 3;
+    private final int j = 3;
 
     @Override
     public void setI() {
@@ -30,4 +30,5 @@ class Derived extends Base {
     public static void main(String[] args) {
         Derived derived = new Derived();
     }
+
 }
