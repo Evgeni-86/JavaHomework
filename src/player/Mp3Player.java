@@ -1,41 +1,61 @@
 package player;
 
-
-
 import java.io.BufferedInputStream;
-import java.io.FileInputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 import javazoom.jl.player.Player;
 
 
-public class Mp3Player {
+class Mp3Player implements PlayerInterface, Runnable {
 
-    private String filename;
+    private Path songPath;
     private Player player;
+    private boolean isPlay = false;
+    private boolean isPlayerError = false;
 
-
-    public Mp3Player(String filename) {
-        this.filename = filename;
+    @Override
+    public void setSong(Path path) {
+        this.songPath = path;
     }
 
-
+    @Override
     public void play() {
-        try {
-            BufferedInputStream buffer = new BufferedInputStream(
-                    new FileInputStream(filename));
+        try (BufferedInputStream buffer = new BufferedInputStream(Files.newInputStream(songPath))) {
             player = new Player(buffer);
+            String filePath = songPath.toString();
+            String name = songPath.toString().substring(filePath.lastIndexOf('\\') + 1);
+            System.out.println("сейчас воспроизводится: " + name);
+            isPlay = true;
             player.play();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            isPlayerError = true;
+        } finally {
+            stop();
         }
-        catch (Exception e) {
-
-            System.out.println(e);
-        }
-
     }
 
-    public static void main(String[] args) {
-        Mp3Player mp3 = new Mp3Player("khanna.mp3");
-        mp3.play();
-
+    @Override
+    public void run() {
+        play();
     }
 
+    @Override
+    public void stop() {
+        if (player != null) {
+            player.close();
+            isPlay = false;
+        }
+    }
+
+    @Override
+    public boolean isPlay() {
+        return isPlay;
+    }
+
+    @Override
+    public boolean isError() {
+        return isPlayerError;
+    }
 }
