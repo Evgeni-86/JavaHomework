@@ -25,8 +25,8 @@ class Mp3Player implements PlayerInterface, Runnable {
             player = new Player(buffer);
             String filePath = songPath.toString();
             String name = songPath.toString().substring(filePath.lastIndexOf('\\') + 1);
-            System.out.println("сейчас воспроизводится: " + name);
             isPlay = true;
+            System.out.println("сейчас воспроизводится: " + name);
             player.play();
         } catch (Exception ex) {
             ex.printStackTrace();

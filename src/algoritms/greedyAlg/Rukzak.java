@@ -3,6 +3,7 @@ package algoritms.greedyAlg;
 import java.lang.reflect.Array;
 import java.util.*;
 
+//динамический подход
 public class Rukzak {
 
     public static void main(String[] args) {

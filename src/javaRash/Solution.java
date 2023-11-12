@@ -1,38 +1,60 @@
 package javaRash;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+
 
 public class Solution {
-    private final String[] students = new String[30];
-
-    public void addStudent(String student) {
-        int i = 0;
-        for (; i < students.length; i++) {
-            if (students[i] == null) {
-                break;
+    public static Integer min(ArrayList<Integer> list) {
+        Integer minimum = list.get(0);
+        for (int i = 1; i < list.size(); i++) {
+            if (list.get(i) < minimum) {
+                minimum = list.get(i);
             }
         }
-        students[i] = student;
+        return minimum;
     }
 
-    public static void main(String[] args) {
-        String[] array = {"A", null, null, "C", null, "D", null};
+    public static Integer max(ArrayList<Integer> list) {
+        Integer maximum = list.get(0);
+        for (int i = 1; i < list.size(); i++) {
+            if (list.get(i) > maximum) {
+                maximum = list.get(i);
+            }
+        }
+        return maximum;
+    }
 
-        int index = 0;
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] != null) {
-                if (i == index) {
-                    index++;
-                    continue;
+    public static int frequency(ArrayList<Integer> list, Integer element) {
+        int frequency = 0;
+        if (element == null) {
+            return frequency;
+        } else {
+            for (Integer integer : list) {
+                if (element.equals(integer)) {
+                    frequency++;
                 }
-                String temp = array[i];
-                array[i] = array[index];
-                array[index++] = temp;
             }
         }
-
-        System.out.println(Arrays.toString(array));
+        return frequency;
     }
+
+    public static int binarySearch(ArrayList<Integer> list, Integer key) {
+        int low = 0;
+        int high = list.size() - 1;
+        int mid = (low + high) / 2;
+        int index = -1;
+        while (low <= high) {
+            if (list.get(mid) < key) {
+                low = mid + 1;
+            } else if (list.get(mid).equals(key)) {
+                index = mid;
+                break;
+            } else {
+                high = mid - 1;
+            }
+            mid = (low + high) / 2;
+        }
+        return index;
+    }
+
 }
