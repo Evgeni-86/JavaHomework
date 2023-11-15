@@ -18,26 +18,10 @@ public class CreditAccount extends Account {
 
     @Override
     public boolean pay(long amount) {
-        if (amount > 0 && amount <= creditLimit) {
+        if (amount > 0 && amount <= creditLimit - Math.abs(balance)) {
             balance -= amount;
-            creditLimit -= amount;
             return true;
         }
-        return false;
-    }
-
-    @Override
-    public boolean transfer(Account account, long amount) {
-        long tempBalance1 = balance;
-        long tempBalance2 = account.balance;
-
-        boolean pay = pay(amount);
-        boolean add = account.add(amount);
-
-        if (pay && add) return true;
-
-        this.setBalance(tempBalance1);
-        account.setBalance(tempBalance2);
         return false;
     }
 }

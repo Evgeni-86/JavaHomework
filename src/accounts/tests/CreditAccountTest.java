@@ -3,23 +3,23 @@ package accounts.tests;
 import accounts.CreditAccount;
 import accounts.SimpleAccount;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 class CreditAccountTest {
 
-    static CreditAccount creditAccount;
+    private CreditAccount creditAccount;
+    private SimpleAccount simpleAccount;
 
     @BeforeEach
     void init() {
         creditAccount = new CreditAccount(1000);
+        simpleAccount = new SimpleAccount();
+        simpleAccount.setBalance(1000);
     }
-
 
     @Test
     void pay1() {
@@ -77,33 +77,17 @@ class CreditAccountTest {
 
     @Test
     void transfer1() {
-        SimpleAccount simpleAccount = new SimpleAccount();
-        simpleAccount.setBalance(100);
-        creditAccount.pay(400);
-        Assertions.assertFalse(creditAccount.transfer(simpleAccount, 601));
-        Assertions.assertEquals(-400, creditAccount.getBalance());
-        Assertions.assertEquals(100, simpleAccount.getBalance());
-    }
-
-    @Test
-    void transfer2() {
-        SimpleAccount simpleAccount = new SimpleAccount();
-        simpleAccount.setBalance(100);
-        creditAccount.pay(400);
         Assertions.assertTrue(creditAccount.transfer(simpleAccount, 600));
-        Assertions.assertEquals(-1000, creditAccount.getBalance());
-        Assertions.assertEquals(700, simpleAccount.getBalance());
+        Assertions.assertEquals(-600, creditAccount.getBalance());
+        Assertions.assertEquals(1600, simpleAccount.getBalance());
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {0, -1})
-    void transfer3(int amount) {
-        SimpleAccount simpleAccount = new SimpleAccount();
-        simpleAccount.setBalance(100);
-        creditAccount.pay(400);
+    @ValueSource(ints = {0, -1, 1001})
+    void transfer2(int amount) {
         Assertions.assertFalse(creditAccount.transfer(simpleAccount, amount));
-        Assertions.assertEquals(-400, creditAccount.getBalance());
-        Assertions.assertEquals(100, simpleAccount.getBalance());
+        Assertions.assertEquals(0, creditAccount.getBalance());
+        Assertions.assertEquals(1000, simpleAccount.getBalance());
     }
 
 }
