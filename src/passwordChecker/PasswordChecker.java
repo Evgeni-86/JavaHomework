@@ -19,7 +19,7 @@ public class PasswordChecker {
         else this.maxRepeats = maxRepeats;
     }
 
-    public boolean verify(String password) {
+    public boolean verify (String password) {
         if (minLength == -1 || maxRepeats == -1)
             throw new IllegalStateException("minLength or maxRepeats not available");
         if (password.length() < minLength) return false;

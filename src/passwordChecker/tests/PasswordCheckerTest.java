@@ -24,16 +24,6 @@ class PasswordCheckerTest {
     @Order(1)
     @Test
     void notInitCheckerParamsRepeats() {
-        Field maxRep = null;
-        try {
-            maxRep = passwordChecker.getClass().getDeclaredField("maxRepeats");
-            maxRep.setAccessible(true);
-            maxRep.set(passwordChecker, -1);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-            System.out.println("test notInitCheckerParamsRepeats error");
-            return;
-        }
         passwordChecker.setMinLength(2);
         IllegalStateException ex = Assertions.assertThrows(IllegalStateException.class, () -> {
             passwordChecker.verify("AAA");
