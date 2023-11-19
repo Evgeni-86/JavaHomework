@@ -12,7 +12,7 @@ class Mp3Player implements PlayerInterface, Runnable {
     private Path songPath;
     private Player player;
     private boolean isPlay = false;
-    private boolean isPlayerError = false;
+    private boolean isError = false;
 
     @Override
     public void setSong(Path path) {
@@ -30,7 +30,7 @@ class Mp3Player implements PlayerInterface, Runnable {
             player.play();
         } catch (Exception ex) {
             ex.printStackTrace();
-            isPlayerError = true;
+            isError = true;
         } finally {
             stop();
         }
@@ -56,6 +56,6 @@ class Mp3Player implements PlayerInterface, Runnable {
 
     @Override
     public boolean isError() {
-        return isPlayerError;
+        return isError;
     }
 }

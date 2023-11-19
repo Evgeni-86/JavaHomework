@@ -25,9 +25,8 @@ class Controller {
     public static void setPlayList(Path path) {
         try (Stream<Path> pathStream = Files.walk(path)) {
             pathStream.forEach((el) -> {
-                if (Files.isRegularFile(el)) {
+                if (Files.isRegularFile(el))
                     PLAYLIST.add(el);
-                }
             });
         } catch (IOException ex) {
             System.out.println("ошибка чтения дирректории");
