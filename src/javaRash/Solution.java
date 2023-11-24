@@ -1,26 +1,27 @@
 package javaRash;
 
-import java.text.SimpleDateFormat;
-import java.util.*;
 
+import java.awt.*;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Solution {
-    public static void main(String[] args) {
-        Date date = new Date("6 January 2010");
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        System.out.println(formatter.format(date));
 
-        new Thread(){
-            @Override
-            public void run() {
-            }
-        }.start();
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-            }
-        }).start();
 
-    }
 }
+
+
+
+
+
+
+
+
+

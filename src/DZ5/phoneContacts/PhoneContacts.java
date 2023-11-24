@@ -47,11 +47,10 @@ public class PhoneContacts {
             boolean o2_isContains = names.contains(o2);
 
             if (o1.equals(o2)) return 0;
-            if (o1_isContains && o2_isContains) return 1;
+            if (o1_isContains && o2_isContains) return o1.compareTo(o2);
             else if (o1_isContains) return -1;
             else if (o2_isContains) return 1;
             else return o1.compareTo(o2);
         }
     }
 }
-

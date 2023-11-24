@@ -16,6 +16,10 @@ public class Iphone {
         int indexTarget = 0;
         for (int i = 0; i < array.length; i++) {
             if (array[i] != null) {
+                if (i == indexTarget) {
+                    indexTarget++;
+                    continue;
+                }
                 String temp = array[indexTarget];
                 array[indexTarget++] = array[i];
                 array[i] = temp;

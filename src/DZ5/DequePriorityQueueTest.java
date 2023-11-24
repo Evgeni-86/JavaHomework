@@ -1,9 +1,8 @@
 package DZ5;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.*;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.LinkedBlockingDeque;
 
 //TODO: Методы offer???
 public class DequePriorityQueueTest {
@@ -12,8 +11,14 @@ public class DequePriorityQueueTest {
             add(1);
             add(2);
         }};
-        System.out.println(integers.offer(3));
-        System.out.println(integers.pollFirst());
+
+        Deque<Integer> integers1 = new LinkedBlockingDeque<>(1);
+        integers1.addLast(1);
+//        integers1.addLast(2);
+        integers1.offerLast(2);
+        System.out.println(integers1);;
+
+        integers.offerLast(1);
         System.out.println(integers.pollFirst());
         System.out.println(integers.pollFirst());
         System.out.println(integers.pollFirst());
@@ -26,8 +31,9 @@ public class DequePriorityQueueTest {
             add(new Test("D"));
             add(new Test("B"));
         }};
+
         System.out.println(queue);
-        queue.offer(new Test("F"));
+//        queue.offer(new Test("F"));
 //        while (!queue.isEmpty())
 //            System.out.println(queue.poll());
 
@@ -57,6 +63,7 @@ class Test implements Comparable<Test> {
     public String toString() {
         return "Test{" +
                 "s='" + s + '\'' +
+                "codePoint = " +  (int) s.charAt(0) +
                 '}';
     }
 }
