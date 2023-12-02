@@ -9,6 +9,7 @@ public class WaitAndNotify implements Runnable {
     int[] array = new int[10];
 
     public synchronized void doSome() throws InterruptedException {
+
         if (a == 0) {
 
             for (int i = 0; i < counterStop; i++) {

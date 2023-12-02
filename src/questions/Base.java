@@ -29,6 +29,7 @@ class Derived extends Base {
 
     public static void main(String[] args) {
         Derived derived = new Derived();
+        System.out.println(derived.getI());
     }
 
 }

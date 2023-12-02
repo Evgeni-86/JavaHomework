@@ -22,13 +22,17 @@ Volatile решает проблему если, когда один поток 
 */
 public class Volatile extends Thread {
     public volatile boolean flag = true;
-
     @Override
     public void run() {
         int counter = 0;
         while (flag){
             counter++;
-//            System.out.println(counter++);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+//            System.out.println(counter);
         }
         System.out.println("counter " + counter);
     }
