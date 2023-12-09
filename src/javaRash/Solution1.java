@@ -2,32 +2,36 @@ package javaRash;
 
 
 import java.io.*;
-import java.util.Arrays;
+
 
 /*
-Файлы и исключения
+Четные символы
 */
 
 public class Solution1 {
     public static void main(String[] args) {
-
-
         try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-             BufferedReader bufR = new BufferedReader(new FileReader(br.readLine()));
-             BufferedWriter bufW = new BufferedWriter(new FileWriter(br.readLine()))
+             FileReader fileReader = new FileReader(br.readLine())
         ) {
+            int counter = 0;
+            String res = "";
+            while (fileReader.ready()) {
+                char cur = (char) fileReader.read();
 
-            while (bufR.ready()) {
-                String[] out = bufR.readLine().split(" ");
-                for (String s : out)
-                    bufW.write(Math.round(Double.parseDouble(s)) + " ");
+                if (Character.isLetter(cur))
+                    res += cur;
+
+                if(!fileReader.ready() || !Character.isLetter(cur)) {
+                    if (res.equals("world"))
+                        counter++;
+                    res = "";
+                }
             }
 
+            System.out.println(counter);
+
         } catch (IOException e) {
-            throw new RuntimeException();
+            e.printStackTrace();
         }
-
     }
-
-
 }
