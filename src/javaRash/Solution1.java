@@ -1,37 +1,46 @@
 package javaRash;
 
 
-import java.io.*;
-
-
 /*
-Четные символы
+Делаем правильный вывод
 */
 
 public class Solution1 {
-    public static void main(String[] args) {
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-             FileReader fileReader = new FileReader(br.readLine())
-        ) {
-            int counter = 0;
-            String res = "";
-            while (fileReader.ready()) {
-                char cur = (char) fileReader.read();
+    public static void main(String[] s) {
+        A a = new C();
+        a.method2();
+    }
 
-                if (Character.isLetter(cur))
-                    res += cur;
+    public static class A {
+        private void method1() {
+            System.out.println("A class, method1");
+        }
 
-                if(!fileReader.ready() || !Character.isLetter(cur)) {
-                    if (res.equals("world"))
-                        counter++;
-                    res = "";
-                }
-            }
+        public void method2() {
+            System.out.println("A class, method2");
+            method1();
+        }
+    }
 
-            System.out.println(counter);
+    public static class B extends A {
+        public void method1() {
+            super.method2();
+            System.out.println("B class, method1");
+        }
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        public void method2() {
+            System.out.println("B class, method2");
+        }
+    }
+
+    public static class C extends B {
+        public void method1() {
+            System.out.println("C class, method1");
+        }
+
+        public void method2() {
+            System.out.println("C class, method2");
+            super.method1();
         }
     }
 }
