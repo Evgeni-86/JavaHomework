@@ -18,8 +18,8 @@ public class WaitAndNotify implements Runnable {
                 }
                 System.out.printf("Random array %s\n", Arrays.toString(array));
                 a = 1;
-                wait();
-                notify();
+                this.wait();
+                this.notify();
             }
 
         } else if (a == 1) {
